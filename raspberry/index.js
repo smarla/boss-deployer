@@ -1,29 +1,51 @@
-/**
- * Created by sm on 01/06/16.
- */
+var express = require('express');
+var http = require('http');
+var app = express();
+var fs = require("fs");
 
-var app = require('http').createServer(handler)
-var io = require('socket.io')(app);
-var fs = require('fs');
+var locked = false;
+var bypass = false;
+var disabled = false;
 
-app.listen(3000);
+app.get('/lock', function (req, res) {
+    http.request({
+        host: '192.168.0.254',
+        path: '/lock',
+        method: 'GET',
+        port: '80'
+    }).end();
 
-function handler (req, res) {
-    fs.readFile(__dirname + '/index.html',
-        function (err, data) {
-            if (err) {
-                res.writeHead(500);
-                return res.end('Error loading index.html');
-            }
+    res.setHeader('Content-Type', 'application/json');
+    res.send(JSON.stringify({ operation: 'lock', status: 'ok' }));
+});
 
-            res.writeHead(200);
-            res.end(data);
-        });
-}
+app.get('/free', function (req, res) {
+    http.request({
+        host: '192.168.0.254',
+        path: '/free',
+        method: 'GET',
+        port: '80'
+    }).end();
 
-io.on('connection', function (socket) {
-    socket.emit('news', { hello: 'world' });
-    socket.on('message', function (data) {
-        console.log(data);
-    });
+    res.setHeader('Content-Type', 'application/json');
+    res.send(JSON.stringify({ operation: 'free', status: 'ok' }));
+});
+
+app.get('/check', function (req, res) {
+    http.request({
+        host: '192.168.0.254',
+        path: '/free',
+        method: 'GET',
+        port: '80'
+    }).end();
+
+    res.setHeader('Content-Type', 'application/json');
+    res.send(JSON.stringify({ operation: 'free', status: 'ok' }));
+});
+
+var server = app.listen(5000, function () {
+    var host = server.address().address;
+    var port = server.address().port;
+
+    console.log("Boss deployer server running at http://%s:%s", host, port);
 });

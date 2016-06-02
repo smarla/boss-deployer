@@ -10,7 +10,7 @@ resources:
   source:
     uri: git@github.com:smarla/boss-deployer.git
     branch: master
-    private_key: {{concourse-private-ssh-key}}
+    private_key: {{concourse-github-private-key}}
 
 jobs:
 - name: versions

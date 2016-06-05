@@ -26,9 +26,7 @@ The server contains two main submodules, each of which with separate responsibil
 
 For creating this system, we've sandboxed a network, that contains all configuration required for the system to work appropriately. 
 
-<div style="float:right">
-    <img src="https://raw.githubusercontent.com/smarla/boss-deployer/master/images/boss-deployer-network-basic.png" height="400">
-</div>
+![Network diagram](https://raw.githubusercontent.com/smarla/boss-deployer/master/images/boss-deployer-network-basic.png)
 
 The router generates a subnet - i.e. `sandnet.smarla.com` - and includes configuration for making devices know each other:
 
@@ -42,17 +40,13 @@ On our initial tests we were using direct WAN connection on the router, so acces
 
 To solve this, ideally, we would like to make the router connect to a `vpn` network we set up, that along with some `iptables` configuration will effectively route all communication with our domain directly into the system. Sadly, the router we used had not this feature, and the second best approach - using a `PPTP` connection configuration - wouldn't be assured to work either, we needed to think on other alternatives.
 
-<div style="float:right">
-    <img src="https://raw.githubusercontent.com/smarla/boss-deployer/master/images/boss-deployer-network-ideal.png" height="400">
-</div>
+![Network diagram](https://raw.githubusercontent.com/smarla/boss-deployer/master/images/boss-deployer-network-ideal.png)
 
 However, we believe this is the method with which you'd get bet results, while keeping the need on more modules at a minimum. Anyways, the solution chosen is not that bad :D.
 
 ## Our solution
 
-<div style="float:right">
-    <img src="https://raw.githubusercontent.com/smarla/boss-deployer/master/images/boss-deployer-network-final.png" height="400">
-</div>
+![Network diagram](https://raw.githubusercontent.com/smarla/boss-deployer/master/images/boss-deployer-network-final.png)
 
 As our router does not give us everything we need to successfully test this system, we make a slight turn on how the system communicates with the outside:
 
@@ -201,4 +195,4 @@ This have been built as a toy, however we think it has possibilities. We've thou
 * Sell the thing somewhere to earn some money.
 * Do something fancy with the money... As, for instance...
 
-TODO beach image
+![Caribbean beach](http://www.ozwallpaper.com/wp-content/uploads/2015/04/beautiful_paradise_beach_wallpaper_for_desktop.jpg)

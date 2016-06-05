@@ -26,7 +26,7 @@ Boss deployer is an Arduino powered gadget, that acts like an "Inverse Panic But
 
 For creating this system, we've sandboxed a network, that contains all configuration required for the system to work appropriately. 
 
-<!--TODO Image-->
+<img src="https://raw.githubusercontent.com/smarla/boss-deployer/master/images/boss-deployer-network-basic.png" height="300" style="margin:auto">
 
 The router generates a subnet - i.e. `sandnet.smarla.com` - and includes configuration for making devices know each other:
 

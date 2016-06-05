@@ -6,21 +6,21 @@ Haven't you ever faced a production deployment, in which you need to wait for bo
 
 Boss deployer is an Arduino powered gadget, that acts like an "Inverse Panic Button". When your code is meant to become productive, the Boss Deployer lights turn blue, so the boss knows that an action is needed. If the boss presses the button, the deployment process continues autommatically, leaving you freedom to take a coffee while the boss thinks whether your code should be pushed in production
  
- ## The gadget
+## The gadget
  
- The gadget itself is an Arduino thingy with a 3d printed design you can find [here](https://cad.onshape.com/documents/28c9fe1e12656febeceadb5d/w/3a78536bc6161e2ace433429/e/a4ede6d6ac27e1a6b7e5e936). The Arduino connects via an ethernet cable to a network - WiFi version coming -, and when the button is pressed a message is sent to the server, which releases the pipeline. You can find the gadget code on the [Arduino](https://github.com/smarla/boss-deployer/tree/master/arduino) folder.
+The gadget itself is an Arduino thingy with a 3d printed design you can find [here](https://cad.onshape.com/documents/28c9fe1e12656febeceadb5d/w/3a78536bc6161e2ace433429/e/a4ede6d6ac27e1a6b7e5e936). The Arduino connects via an ethernet cable to a network - WiFi version coming -, and when the button is pressed a message is sent to the server, which releases the pipeline. You can find the gadget code on the [Arduino](https://github.com/smarla/boss-deployer/tree/master/arduino) folder.
  
- Basically, the gadget publishes a Web Server, along with a client that consumes the server. Via calls to the gadget's web server, the Raspberry server changes the state of the gadget - set locks or change working mode - so both modules publish a server and a client, and both of them are consumed altogether.
+Basically, the gadget publishes a Web Server, along with a client that consumes the server. Via calls to the gadget's web server, the Raspberry server changes the state of the gadget - set locks or change working mode - so both modules publish a server and a client, and both of them are consumed altogether.
  
- ## The server
+## The server
  
- The server is a quite basic API mounted on a Raspberry Pi. It's main intention is to maintain active communication between the gadget and the outside - mainly with pipelines - and manage the states of the gadget. 
+The server is a quite basic API mounted on a Raspberry Pi. It's main intention is to maintain active communication between the gadget and the outside - mainly with pipelines - and manage the states of the gadget. 
  
- The server contains two main submodules, each of which with separate responsibilities:
+The server contains two main submodules, each of which with separate responsibilities:
  
- * **HTTP API:** This api connects to the gadget bi-directionally - it calls gadget's API methods and receives comms from gadget's client - for managing state changes on the system - _e.g. the server calls the gadget's to engage the lock once the pipeline requests it; then it listens to calls made from the gadget's client to the server for releasing such lock_.
+* **HTTP API:** This api connects to the gadget bi-directionally - it calls gadget's API methods and receives comms from gadget's client - for managing state changes on the system - _e.g. the server calls the gadget's to engage the lock once the pipeline requests it; then it listens to calls made from the gadget's client to the server for releasing such lock_.
  
- * **Socket channel:** There is a socket channel continuously connected and sharing information about the pipeline and system status. This is mainly used to get communication outside system's network, and successfully communicate with any pipeline, anywhere.
+* **Socket channel:** There is a socket channel continuously connected and sharing information about the pipeline and system status. This is mainly used to get communication outside system's network, and successfully communicate with any pipeline, anywhere.
  
 # Network configuration
 

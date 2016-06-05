@@ -26,7 +26,9 @@ Boss deployer is an Arduino powered gadget, that acts like an "Inverse Panic But
 
 For creating this system, we've sandboxed a network, that contains all configuration required for the system to work appropriately. 
 
-<img src="https://raw.githubusercontent.com/smarla/boss-deployer/master/images/boss-deployer-network-basic.png" height="300" style="margin:auto">
+<div style="text-align:center">
+    <img src="https://raw.githubusercontent.com/smarla/boss-deployer/master/images/boss-deployer-network-basic.png" height="400">
+</div>
 
 The router generates a subnet - i.e. `sandnet.smarla.com` - and includes configuration for making devices know each other:
 
@@ -34,15 +36,23 @@ The router generates a subnet - i.e. `sandnet.smarla.com` - and includes configu
 * **Port forwarding:** All inbound requests to port 3000 will autommatically be forwarded to the gadget. The ones on the port 5000 will be routed to the server. _NOTE: This would not be needed for the configuration used on this approach. However, it is needed for our ideal state. TODO Link.
 * **Dynamic DNS:** The `noip` service is used to maintain a static name on the network, independently on where it goes up. This goes along with a `CNAME` to engage the noip name - i.e. `smarla.hopto.org` - to `sandnet.smarla.com`. _NOTE: This would not be needed for the configuration used on this approach. However, it is needed for our ideal state. TODO Link.
 
-## The ideal state
+## The ideal world
 
 On our initial tests we were using direct WAN connection on the router, so accessing to `sandnet.smarla.com` always landed us into the system, and thus everything went alright. However, when we connect router's WAN to some other's LAN - _e.g. connecting it in the office :) - the domain will point to the main network's public IP, but we would be far beyond that, unreachable from the outside. 
 
 To solve this, ideally, we would like to make the router connect to a `vpn` network we set up, that along with some `iptables` configuration will effectively route all communication with our domain directly into the system. Sadly, the router we used had not this feature, and the second best approach - using a `PPTP` connection configuration - wouldn't be assured to work either, we needed to think on other alternatives.
 
+<div style="text-align:center">
+    <img src="https://raw.githubusercontent.com/smarla/boss-deployer/master/images/boss-deployer-network-ideal.png" height="400">
+</div>
+
 However, we believe this is the method with which you'd get bet results, while keeping the need on more modules at a minimum. Anyways, the solution chosen is not that bad :D.
 
 ## Our solution
+
+<div style="text-align:center">
+    <img src="https://raw.githubusercontent.com/smarla/boss-deployer/master/images/boss-deployer-network-final.png" height="400">
+</div>
 
 As our router does not give us everything we need to successfully test this system, we make a slight turn on how the system communicates with the outside:
 

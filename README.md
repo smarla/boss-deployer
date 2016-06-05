@@ -26,7 +26,7 @@ The server contains two main submodules, each of which with separate responsibil
 
 For creating this system, we've sandboxed a network, that contains all configuration required for the system to work appropriately. 
 
-<div style="text-align:center">
+<div style="float:right">
     <img src="https://raw.githubusercontent.com/smarla/boss-deployer/master/images/boss-deployer-network-basic.png" height="400">
 </div>
 
@@ -42,7 +42,7 @@ On our initial tests we were using direct WAN connection on the router, so acces
 
 To solve this, ideally, we would like to make the router connect to a `vpn` network we set up, that along with some `iptables` configuration will effectively route all communication with our domain directly into the system. Sadly, the router we used had not this feature, and the second best approach - using a `PPTP` connection configuration - wouldn't be assured to work either, we needed to think on other alternatives.
 
-<div style="text-align:center">
+<div style="float:right">
     <img src="https://raw.githubusercontent.com/smarla/boss-deployer/master/images/boss-deployer-network-ideal.png" height="400">
 </div>
 
@@ -50,7 +50,7 @@ However, we believe this is the method with which you'd get bet results, while k
 
 ## Our solution
 
-<div style="text-align:center">
+<div style="float:right">
     <img src="https://raw.githubusercontent.com/smarla/boss-deployer/master/images/boss-deployer-network-final.png" height="400">
 </div>
 

@@ -4,12 +4,21 @@ var app = express();
 var fs = require("fs");
 
 var locked = false;
-var bypass = false;
-var disabled = false;
+var released = false;
+var blocked = false;
+
+var gadget = null;
+
+app.get('/ping', function (req, res) {
+    console.log("Someone is pinging us");
+
+    res.setHeader('Content-Type', 'application/json');
+    res.send(JSON.stringify({ operation: 'ping', status: 'ok' }));
+});
 
 app.get('/lock', function (req, res) {
     http.request({
-        host: '192.168.0.254',
+        host: '192.168.1.254',
         path: '/lock',
         method: 'GET',
         port: '80'
@@ -21,18 +30,61 @@ app.get('/lock', function (req, res) {
     res.send(JSON.stringify({ operation: 'lock', status: 'ok' }));
 });
 
-app.get('/free', function (req, res) {
-    locked = false;
+app.get('/unlock', function (req, res) {
+    http.request({
+        host: '192.168.1.254',
+        path: '/unlock',
+        method: 'GET',
+        port: '80'
+    }).end();
+
+    locked = true;
+
+    res.setHeader('Content-Type', 'application/json');
+    res.send(JSON.stringify({ operation: 'unlock', status: 'ok' }));
 });
 
-app.get('/bypass', function (req, res) {
-    bypass = true;
-    disabled = false;
+app.get('/release', function (req, res) {
+    http.request({
+        host: '192.168.1.254',
+        path: '/release',
+        method: 'GET',
+        port: '80'
+    }).end();
+
+    released = true;
+
+    res.setHeader('Content-Type', 'application/json');
+    res.send(JSON.stringify({ operation: 'release', status: 'ok' }));
 });
 
-app.get('/disable', function (req, res) {
-    bypass = false;
-    disabled = true;
+app.get('/block', function (req, res) {
+    http.request({
+        host: '192.168.1.254',
+        path: '/block',
+        method: 'GET',
+        port: '80'
+    }).end();
+
+    blocked = true;
+
+    res.setHeader('Content-Type', 'application/json');
+    res.send(JSON.stringify({ operation: 'block', status: 'ok' }));
+});
+
+app.get('/default', function (req, res) {
+    http.request({
+        host: '192.168.1.254',
+        path: '/default',
+        method: 'GET',
+        port: '80'
+    }).end();
+
+    released = false;
+    blocked = false;
+
+    res.setHeader('Content-Type', 'application/json');
+    res.send(JSON.stringify({ operation: 'default', status: 'ok' }));
 });
 
 /*

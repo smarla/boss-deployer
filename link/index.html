@@ -43,9 +43,9 @@
                 case 'lock':
                     status = 'LOCKED';
                     lockId = data.data.uuid;
-                    pipeline = data.data.pipeline;
-                    step = data.data.step;
-                    log.push('lock::[' + lockId + '] lock generated for pipeline ' + pipeline + ', on step ' + step + '.');
+                    pipeline = data.data.data.pipeline;
+                    step = data.data.data.step;
+                    log.push('lock::[' + lockId + '] lock generated for pipeline <b>' + pipeline + '</b>, on step <b>' + step + '</b>.');
 
                     buttons.lock = false;
                     buttons.unlock = true;

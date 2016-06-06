@@ -30,7 +30,7 @@ io.on('connection', function (socket) {
                 // TODO Throw error - device unknown
         }
 
-        socket.emit('ui', { operation: login, data: { device: data.name } });
+        socket.emit('ui', { operation: 'login', data: { device: data.name } });
         console.log('device', data.name, 'connected');
     });
 

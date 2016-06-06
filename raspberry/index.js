@@ -2,6 +2,7 @@ var express = require('express');
 var http = require('http');
 var app = express();
 var fs = require("fs");
+var io = require("socket.io-client");
 
 var locked = false;
 var released = false;
@@ -107,4 +108,12 @@ var server = app.listen(5000, function () {
     var port = server.address().port;
 
     console.log("Boss deployer server running at http://%s:%s", host, port);
+});
+
+var socket = io.connect('http://smarla.com:8000');
+socket.on('connect', function () {
+
+    console.log('Connecting to socket');
+    socket.emit('login', { name: 'raspberry' });
+
 });

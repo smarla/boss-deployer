@@ -31,6 +31,7 @@ io.on('connection', function (socket) {
         }
 
         socket.emit('ui', { operation: login, data: { device: data.name } });
+        console.log('device', data.name, 'connected');
     });
 
 });

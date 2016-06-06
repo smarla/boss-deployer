@@ -46,6 +46,23 @@
             render();
         }
     </script>
+
+    <style>
+        h1 {
+            color: #444;
+            margin-bottom: 2em;
+        }
+
+        .pipeline-status {
+            font-size: 2em;
+            text-transform: uppercase;
+        }
+
+        .status-free {
+            color: green;
+        }
+
+    </style>
 </head>
 <body>
 
@@ -55,6 +72,7 @@
                 <h1>Boss deployer - Link management</h1>
             </div>
         </div>
+
         <div class="row">
             <div class="col-xs-6 text-right">
                 <div id="device_raspberry">
@@ -65,6 +83,18 @@
                 <div id="device_cd">
                     <img src="https://pbs.twimg.com/profile_images/714899641628753920/3C8UrVPf.jpg" height="200">
                 </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-xs-12 text-center">
+                <span class="text-muted">
+                    Pipeline status
+                </span>
+                <br />
+                <span class="pipeline-status status-free">
+                    FREE
+                </span>
             </div>
         </div>
     </div>

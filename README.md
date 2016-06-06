@@ -65,6 +65,8 @@ As our router does not give us everything we need to successfully test this syst
 
 # System flow
 
+<!--TODO Basic flow-->
+
 ## Startup
 
 * The Link socket server launches and waits for connections.
@@ -72,6 +74,8 @@ As our router does not give us everything we need to successfully test this syst
 * The gadget's web client calls server's `/ping` operation, to verify the API is up and running. At the same time the gadget's server starts. Then it waits for response from the Raspi server, who should call gadget's `ping-ack` method.
 
 ## Locking
+
+<!--TODO Locking flow-->
 
 When a pipeline reaches a state in which a boss'es action is needed, a message must be sent from the pipeline to the socket, to the `lock` channel. The message should include this data structure:
 ```
@@ -85,6 +89,8 @@ This communication with the Link server will trigger a donwards communication th
  
 ## Unlocking
 
+<!--TODO unlocking flow-->
+
 Unlocking is triggered directly on the gadget, when the unlock button - the big one - is pressed. The gadget calls the Raspi `/unlock` method, that will send the action to the socket, to the `unlock` channel. The message sent will be:
 ```
 {
@@ -95,6 +101,8 @@ Unlocking is triggered directly on the gadget, when the unlock button - the big 
 This message should be listened from the pipeline, to act in consequence, and free the pipeline.
  
 ## Releasing
+
+<!--TODO releasing flow-->
 
 Releasing is the method by which the boss allows every pipeline to execute, bypassing locks and needs for unlock. This can happen, if the boss is in a good mood.
 
@@ -110,6 +118,8 @@ Upon creating and checking locks, this status should be fetched, to bypass all o
 
 ## Blocking
 
+<!--TODO blocking flow-->
+
 As there is a mode for good mood, it should be another one for bad moods :(. This is the `blocked` mode. Upon blocking, all pipelines that require a boss'es action to finish will be autommatically killed whenever they reach the state with actions required. Heck, the boss might have even something that makes all pipelines stop immediately!
 
 When the `block` button - the red one - is pressed, the mode changes immediately to `blocked`. The lights will spin in red - we might even add a siren sound for this mode - and a `/block` call is made to Raspi's API. It redirects the message through the socket, at the `status` channel:
@@ -121,6 +131,8 @@ When the `block` button - the red one - is pressed, the mode changes immediately
 ```
 
 ## Defaulting
+
+<!--TODO default mode flow-->
 
 When we are in the two above scenarios, the gadget won't be called for unlocking pipelines, anytime. To return to `default` mode - those where the pipelines where locked, and unlocking is required - the boss needs to press the unlock button, until light flashes shortly in blue. Then Raspi's `/default` method is called, and the `default` channel of the socket receives this message:
 ```

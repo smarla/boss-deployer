@@ -28,7 +28,7 @@ The server contains two main submodules, each of which with separate responsibil
 
 The link is a Socket server, that connects the Raspi API to the outside. Pipelines, and all external systems that consume information from boss deployer, shall be connected to this socket. The socket is available at `connect.sandnet.smarla.com`.
 
-![Link server](https://raw.githubusercontent.com/smarla/boss-deployer/master/images/boss-link-screenshot.png)
+![Link server](https://raw.githubusercontent.com/smarla/boss-deployer/master/images/boss-deployer-link-screenshot.png)
  
 # Network configuration
 

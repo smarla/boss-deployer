@@ -15,7 +15,12 @@ app.get('/', function (req, res) {
 var raspyConnected = false;
 var cdConnected = false;
 
+allSockets = [];
+
 io.on('connection', function (socket) {
+    if(allSockets.indexOf(socket) === -1) {
+        allSockets.push(socket);
+    }
     // Emit welcome
 
     socket.on('login', function(data) {
@@ -30,8 +35,15 @@ io.on('connection', function (socket) {
                 // TODO Throw error - device unknown
         }
 
-        socket.emit('ui', { operation: 'login', data: { device: data.name } });
+        emitToAll('ui', { operation: 'login', data: { device: data.name } });
         console.log('device', data.name, 'connected');
     });
 
 });
+
+function emitToAll(channel, message) {
+    for(var i = 0; i < allSockets.length; i++) {
+        var socket = allSockets[i];
+        socket.emit(channel, message);
+    }
+}

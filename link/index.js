@@ -12,10 +12,9 @@ app.get('/', function (req, res) {
     res.sendfile(__dirname + '/index.html');
 });
 
-var raspyConnected = false;
-var cdConnected = false;
-
-allSockets = [];
+var raspySocket = false;
+var cdSocket = false;
+var uiSocket = false;
 
 io.on('connection', function (socket) {
     if(allSockets.indexOf(socket) === -1) {
@@ -26,16 +25,19 @@ io.on('connection', function (socket) {
     socket.on('login', function(data) {
         switch(data.name) {
             case 'raspberry':
-                raspyConnected = true;
+                raspySocket = socket;
                 break;
             case 'cd':
-                cdConnected = true;
+                cdSocket = socket;
+                break;
+            case 'ui':
+                uiSocket = socket;
                 break;
             default:
                 // TODO Throw error - device unknown
         }
 
-        emitToAll('ui', { operation: 'login', data: { device: data.name } });
+        uiSocket.emit('ui', { operation: 'login', data: { device: data.name } });
         console.log('device', data.name, 'connected');
     });
 

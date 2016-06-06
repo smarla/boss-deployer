@@ -23,10 +23,23 @@
                     }
                     break;
             }
+
+            render();
         });
 
         function render() {
+            var raspyItem = document.getElementById('device_raspberry');
+            var cdItem = document.getElementById('device_cd');
 
+            raspyItem.style.opacity = 0.3;
+            cdItem.style.opacity = 0.3;
+
+            if(raspyConnected) raspyItem.style.opacity = 1;
+            if(cdConnected) cdItem.style.opacity = 1;
+        }
+
+        window.onload = function() {
+            render();
         }
     </script>
 </head>
@@ -34,8 +47,8 @@
 
     <div class="panel">
         <div class="row">
-            <div class="col-xs-12">
-                Boss deployer - Link management
+            <div class="col-xs-12 text-center">
+                <h1>Boss deployer - Link management</h1>
             </div>
         </div>
         <div class="row">

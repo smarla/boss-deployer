@@ -84,8 +84,7 @@ This communication with the Link server will trigger a donwards communication th
 Unlocking is triggered directly on the gadget, when the unlock button - the big one - is pressed. The gadget calls the Raspi `/unlock` method, that will send the action to the socket, to the `unlock` channel. The message sent will be:
 ```
 {
-  uuid: 'lock-uuid',
-  unlocked_at: Timestamp
+  uuid: 'lock-uuid'
 }
 ```
 

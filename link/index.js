@@ -58,6 +58,7 @@ io.on('connection', function (socket) {
         var uuid = shortid.generate();
 
         var response = locks[uuid] = {
+            uuid: uuid,
             data: data,
             locked_at: new Date().getTime()
         };

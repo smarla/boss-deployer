@@ -9,6 +9,7 @@ var released = false;
 var blocked = false;
 
 var gadget = null;
+var lastLock = null;
 
 app.get('/ping', function (req, res) {
     console.log("Someone is pinging us");
@@ -32,14 +33,11 @@ app.get('/lock', function (req, res) {
 });
 
 app.get('/unlock', function (req, res) {
-    http.request({
-        host: '192.168.1.254',
-        path: '/unlock',
-        method: 'GET',
-        port: '80'
-    }).end();
+    locked = false;
 
-    locked = true;
+    var lock = lastLock;
+    lastLock = null;
+    socket.emit('unlock', { uuid: lock.uuid });
 
     res.setHeader('Content-Type', 'application/json');
     res.send(JSON.stringify({ operation: 'unlock', status: 'ok' }));
@@ -113,9 +111,9 @@ var server = app.listen(5000, function () {
 socket.on('connect', function () {
     console.log('Connecting to socket');
     socket.emit('login', { name: 'raspberry' });
+});
 
-    socket.on('lock', function(data) {
-        console.log('Locking system', data);
-    });
-
+socket.on('lock', function(data) {
+    lastLock = data;
+    console.log('Locking system', data);
 });

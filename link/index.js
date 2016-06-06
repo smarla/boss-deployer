@@ -37,6 +37,18 @@ function turnRaspiOff() {
     logout({ name: 'raspberry' });
 }
 
+var cdAliveInterval = null;
+var cdAliveTimeout = null;
+function isCdAlive() {
+    cdAliveTimeout = setTimeout(turnCdOff, 1000);
+    cdSocket && cdSocket.emit('is-alive', {});
+}
+
+function turnCdOff() {
+    cdSocket = null;
+    logout({ name: 'cd' });
+}
+
 function logout(data) {
     switch(data.name) {
         case 'raspberry':
@@ -46,6 +58,8 @@ function logout(data) {
             break;
         case 'cd':
             cdSocket = null;
+            clearInterval(cdAliveInterval);
+            cdAliveInterval = null;
             break;
         default:
         // TODO Throw error - device unknown
@@ -67,6 +81,12 @@ io.on('connection', function (socket) {
                 raspiAliveTimeout = null;
             }
         }
+        else if(data.name === 'cd') {
+            if(cdAliveTimeout !== null) {
+                clearTimeout(cdAliveTimeout);
+                cdAliveTimeout = null;
+            }
+        }
     });
 
     socket.on('login', function(data) {
@@ -79,6 +99,8 @@ io.on('connection', function (socket) {
                 break;
             case 'cd':
                 cdSocket = socket;
+
+                cdAliveInterval = setInterval(isCdAlive, 1000);
 
                 cdSocket.emit('welcome', {
                     currentStatus: pipelineStatus,

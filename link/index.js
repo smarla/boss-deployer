@@ -16,6 +16,8 @@ var raspySocket = false;
 var cdSocket = false;
 var uiSocket = false;
 
+var allSockets = [];
+
 io.on('connection', function (socket) {
     if(allSockets.indexOf(socket) === -1) {
         allSockets.push(socket);

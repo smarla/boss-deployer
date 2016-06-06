@@ -6,7 +6,7 @@ socket.on('connect', function () {
 });
 
 socket.on('welcome', function(data) {
-    console.log(JSON.stringify(data));
+    process.stdout.write(JSON.stringify(data));
 });
 
 process.stdin.resume();//so the program will not close instantly

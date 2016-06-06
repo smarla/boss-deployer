@@ -25,17 +25,57 @@ var locks = {};
 var unlocks = {};
 var status = [];
 
+var raspiAliveInterval = null;
+var raspiAliveTimeout = null;
+function isRaspiAlive() {
+    raspiAliveTimeout = setTimeout(turnRaspiOff, 1000);
+    raspiSocket && raspiSocket.emit('is-alive', {});
+}
+
+function turnRaspiOff() {
+    raspiSocket = null;
+    logout({ name: 'raspberry' });
+}
+
+function logout(data) {
+    switch(data.name) {
+        case 'raspberry':
+            raspiSocket = null;
+            clearInterval(raspiAliveInterval);
+            raspiAliveInterval = null;
+            break;
+        case 'cd':
+            cdSocket = null;
+            break;
+        default:
+        // TODO Throw error - device unknown
+    }
+
+    uiSocket && uiSocket.emit('ui', { operation: 'logout', data: { device: data.name } });
+    console.log('device', data.name, 'disconnected');
+}
 
 io.on('connection', function (socket) {
     if(allSockets.indexOf(socket) === -1) {
         allSockets.push(socket);
     }
-    // Emit welcome
+
+    socket.on('ack-alive', function(data) {
+        if(data.name === 'raspberry') {
+            if(raspiAliveTimeout !== null) {
+                clearTimeout(raspiAliveTimeout);
+                raspiAliveTimeout = null;
+            }
+        }
+    });
 
     socket.on('login', function(data) {
         switch(data.name) {
             case 'raspberry':
                 raspiSocket = socket;
+
+                raspiAliveInterval = setInterval(isRaspiAlive, 1000);
+
                 break;
             case 'cd':
                 cdSocket = socket;
@@ -60,19 +100,7 @@ io.on('connection', function (socket) {
     });
 
     socket.on('logout', function(data) {
-        switch(data.name) {
-            case 'raspberry':
-                raspiSocket = null;
-                break;
-            case 'cd':
-                cdSocket = null;
-                break;
-            default:
-            // TODO Throw error - device unknown
-        }
-
-        uiSocket && uiSocket.emit('ui', { operation: 'logout', data: { device: data.name } });
-        console.log('device', data.name, 'disconnected');
+        logout(data);
     });
 
     socket.on('lock', function(data) {

@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Boss deployer link management</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+        var raspyConnected = false;
+        var cdConnected = false;
+
+        var socket = io('http://smarla.com:8000');
+        socket.on('ui', function (data) {
+            switch(data.operation) {
+                case 'login':
+                    switch(data.data.device) {
+                        case 'raspberry':
+                            raspyConnected = true;
+                            break;
+                        case 'cd':
+                            cdConnected = true;
+                            break;
+                    }
+                    break;
+            }
+        });
+
+        function render() {
+
+        }
+    </script>
+</head>
+<body>
+
+    <div class="panel">
+        <div class="row">
+            <div class="col-xs-12">
+                Boss deployer - Link management
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-6 text-right">
+                <div id="device_raspberry">
+                    <img src="https://www.raspberrypi.org/wp-content/uploads/2015/08/raspberry-pi-logo.png" height="200">
+                </div>
+            </div>
+            <div class="col-xs-6 text-left">
+                <div id="device_cd">
+                    <img src="https://pbs.twimg.com/profile_images/714899641628753920/3C8UrVPf.jpg" height="200">
+                </div>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>

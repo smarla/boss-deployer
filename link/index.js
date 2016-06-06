@@ -39,7 +39,7 @@ io.on('connection', function (socket) {
                 // TODO Throw error - device unknown
         }
 
-        uiSocket.emit('ui', { operation: 'login', data: { device: data.name } });
+        uiSocket && uiSocket.emit('ui', { operation: 'login', data: { device: data.name } });
         console.log('device', data.name, 'connected');
     });
 

@@ -5,6 +5,7 @@
 var app = require('express')();
 var server = require('http').Server(app);
 var io = require('socket.io')(server);
+var shortid = require('shortid');
 
 server.listen(8000);
 
@@ -19,8 +20,8 @@ var uiSocket = false;
 var allSockets = [];
 
 var pipelineStatus = 'FREE';
-var locks = [];
-var unlocks = [];
+var locks = {};
+var unlocks = {};
 var status = [];
 
 
@@ -53,9 +54,33 @@ io.on('connection', function (socket) {
         // TODO Exception management
 
         console.log('Pipeline', data.pipeline, 'requested locking on step', data.step);
+
+        var uuid = shortid.generate();
+
+        var response = locks[uuid] = {
+            data: data,
+            locked_at: new Date().getTime()
+        };
+
         pipelineStatus = 'LOCKED';
-        uiSocket && uiSocket.emit('ui', { operation: 'lock', data: data });
-    })
+        uiSocket && uiSocket.emit('ui', { operation: 'lock', data: response });
+    });
+
+    socket.on('unlock', function(data) {
+        // TODO Exception management
+
+        console.log('Lock', data.uuid, 'requested for releasing');
+
+        // TODO Verify that lock exists
+
+        var response = unlocks[data.uuid] = {
+            uuid: data.uuid,
+            unlocked_at: new Date().getTime()
+        };
+
+        pipelineStatus = 'FREE';
+        uiSocket && uiSocket.emit('ui', { operation: 'unlock', data: response });
+    });
 
 });
 

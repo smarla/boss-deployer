@@ -8,8 +8,12 @@
     <script>
         var raspyConnected = false;
         var cdConnected = false;
-        var status = 'FREE';
 
+        var status = 'FREE';
+        var lockId = null;
+        var pipeline = null;
+        var step = null;
+        var log = [];
 
         var socket = io.connect('http://smarla.com:8000');
 
@@ -30,6 +34,17 @@
                     break;
                 case 'lock':
                     status = 'LOCKED';
+                    lockId = data.uuid;
+                    pipeline = data.data.pipeline;
+                    step = data.pipeline.step;
+                    log.push('lock::[' + lockId + '] lock generated for pipeline ' + pipeline + ', on step ' + step + '.');
+                    break;
+                case 'unlock':
+                    status = 'FREE';
+                    lockId = null;
+                    pipeline = null;
+                    step = null;
+                    log.push('unlock::[' + lockId + '] lock released');
                     break;
             }
 
@@ -55,6 +70,18 @@
                 case 'LOCKED':
                     statusItem.className = 'status-locked';
                     break;
+            }
+
+            var logItem = document.getElementById('log');
+            logItem.innerHTML = '';
+
+            for(var i = 0; i < log.length; i++) {
+                var item = document.createElement('div');
+                var logMessage = log[i].split('::');
+                item.setAttribute('class', logMessage[0]);
+                item.appendChild(document.createTextNode(logMessage[1]));
+
+                logItem.appendChild(item);
             }
         }
 
@@ -121,7 +148,7 @@
         }
 
         .status-free {
-            color: green;
+            color: blue;
         }
 
         .status-locked {
@@ -130,6 +157,27 @@
 
         .device {
             margin: 0.5em 1em;
+        }
+
+        #log {
+            width: 100%;
+            margin: 2em 0;
+        }
+
+        #log .lock {
+            color: orange;
+        }
+
+        #log .unlock {
+            color: blue;
+        }
+
+        #log .block {
+            color: red;
+        }
+        
+        #log .release {
+            color: green;
         }
 
     </style>
@@ -164,6 +212,15 @@
                 <span class="status-free" id="status">
                     FREE
                 </span>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="log">
+                    <div>Started log for Boss deployer...</div>
+
+                </div>
             </div>
         </div>
     </div>

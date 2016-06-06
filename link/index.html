@@ -65,6 +65,27 @@
             });
         }
 
+        function dummyUnlock() {
+            socket.emit('unlock', {
+                pipeline: 'sent-from-link',
+                step: 'dummy-step'
+            });
+        }
+
+        function dummyRelease() {
+            socket.emit('release', {
+                pipeline: 'sent-from-link',
+                step: 'dummy-step'
+            });
+        }
+
+        function dummyBlock() {
+            socket.emit('release', {
+                pipeline: 'sent-from-link',
+                step: 'dummy-step'
+            });
+        }
+
         window.onload = function() {
             render();
         }
@@ -82,8 +103,6 @@
             margin: 10px;
             width: 30px;
             height: 30px;
-            border: none;
-            border-radius: 5px;
         }
 
         h1 {
@@ -150,8 +169,20 @@
     </div>
 
     <div id="toolbox">
-        <button class="lock" onclick="dummyLock()">
+        <button class="btn btn-default lock" onclick="dummyLock()">
             <i class="glyphicon glyphicon-lock"></i>
+        </button>
+
+        <button class="btn btn-default unlock" onclick="dummyUnlock()">
+            <i class="glyphicon glyphicon-road"></i>
+        </button>
+
+        <button class="btn btn-default release" onclick="dummyRelease()">
+            <i class="glyphicon glyphicon-plane"></i>
+        </button>
+
+        <button class="btn btn-default block" onclick="dummyBlock()">
+            <i class="glyphicon glyphicon-remove"></i>
         </button>
     </div>
 

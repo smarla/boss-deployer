@@ -9,6 +9,10 @@ socket.on('welcome', function(data) {
     process.stdout.write(JSON.stringify(data));
 });
 
+socket.on('is-alive', function(data) {
+    socket.emit('ack-alive', { name: 'cd' });
+});
+
 process.stdin.resume();//so the program will not close instantly
 
 function exitHandler(options, err) {

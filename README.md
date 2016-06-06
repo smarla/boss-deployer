@@ -10,6 +10,8 @@ Boss deployer is an Arduino powered gadget, that acts like an "Inverse Panic But
  
 The gadget itself is an Arduino thingy with a 3d printed design you can find [here](https://cad.onshape.com/documents/28c9fe1e12656febeceadb5d/w/3a78536bc6161e2ace433429/e/a4ede6d6ac27e1a6b7e5e936). The Arduino connects via an ethernet cable to a network - WiFi version coming -, and when the button is pressed a message is sent to the server, which releases the pipeline. You can find the gadget code on the [Arduino](https://github.com/smarla/boss-deployer/tree/master/arduino) folder.
  
+![3D model](https://raw.githubusercontent.com/smarla/boss-deployer/master/images/boss-deployer-model.png)
+ 
 Basically, the gadget publishes a Web Server, along with a client that consumes the server. Via calls to the gadget's web server, the Raspberry server changes the state of the gadget - set locks or change working mode - so both modules publish a server and a client, and both of them are consumed altogether.
  
 ## The server
@@ -25,6 +27,8 @@ The server contains two main submodules, each of which with separate responsibil
 ## The link
 
 The link is a Socket server, that connects the Raspi API to the outside. Pipelines, and all external systems that consume information from boss deployer, shall be connected to this socket. The socket is available at `connect.sandnet.smarla.com`.
+
+![Link server](https://raw.githubusercontent.com/smarla/boss-deployer/master/images/boss-link-screenshot.png)
  
 # Network configuration
 

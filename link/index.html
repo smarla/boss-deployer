@@ -74,7 +74,7 @@
                     pipeline = null;
                     step = null;
 
-                    var logStatus = status === 'RELEASED' ? 'release': status === 'BLOCKED' ? 'block' : 'FREE';
+                    var logStatus = status === 'RELEASED' ? 'release': status === 'BLOCKED' ? 'block' : 'default';
                     var logMessage = {
                         'RELEASED': 'All pipelines released to RUN FREE :)',
                         'BLOCKED': 'All pipelines have been BLOCKED by the boss :(',
@@ -256,6 +256,10 @@
         
         #log .release {
             color: green;
+        }
+
+        #log .default {
+            color: #666;
         }
 
     </style>

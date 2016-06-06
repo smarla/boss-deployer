@@ -9,7 +9,7 @@
         var raspyConnected = false;
         var cdConnected = false;
 
-        var socket = io('http://smarla.com:8000');
+        var socket = io.connect('http://smarla.com:8000');
         socket.on('ui', function (data) {
             switch(data.operation) {
                 case 'login':

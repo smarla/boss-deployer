@@ -15,6 +15,14 @@
         var step = null;
         var log = [];
 
+        var buttons = {
+            lock: true,
+            unlock: false,
+            release: true,
+            block: true,
+            default: false
+        };
+
         var socket = io.connect('http://smarla.com:8000');
 
         // Login the UI
@@ -38,6 +46,13 @@
                     pipeline = data.data.pipeline;
                     step = data.data.step;
                     log.push('lock::[' + lockId + '] lock generated for pipeline ' + pipeline + ', on step ' + step + '.');
+
+                    buttons.lock = false;
+                    buttons.unlock = true;
+                    buttons.release = false;
+                    buttons.block = false;
+                    buttons.default = false;
+
                     break;
                 case 'unlock':
                     status = 'FREE';
@@ -45,6 +60,13 @@
                     pipeline = null;
                     step = null;
                     log.push('unlock::[' + data.data.uuid + '] lock released');
+
+                    buttons.lock = true;
+                    buttons.unlock = false;
+                    buttons.release = true;
+                    buttons.block = true;
+                    buttons.default = false;
+
                     break;
                 case 'status':
                     status = data.data.status !== 'default' ? data.data.status : 'FREE';
@@ -52,13 +74,28 @@
                     pipeline = null;
                     step = null;
 
-                    var logStatus = status === 'RELEASED' ? 'release': status === 'BLOCKED' ? 'block' : 'unlock';
+                    var logStatus = status === 'RELEASED' ? 'release': status === 'BLOCKED' ? 'block' : 'FREE';
                     var logMessage = {
                         'RELEASED': 'All pipelines released to RUN FREE :)',
                         'BLOCKED': 'All pipelines have been BLOCKED by the boss :(',
                         'FREE': 'Returned to DEFAULT execution mode'
                     }[status];
                     log.push(logStatus + '::' + logMessage);
+
+                    buttons.lock = false;
+                    buttons.unlock = false;
+                    buttons.release = false;
+                    buttons.block = false;
+                    buttons.default = true;
+
+                    if(status === 'FREE') {
+                        buttons.lock = false;
+                        buttons.unlock = false;
+                        buttons.release = true;
+                        buttons.block = true;
+                        buttons.default = false;
+                    }
+
                     break;
 
             }
@@ -104,6 +141,18 @@
 
                 logItem.appendChild(item);
             }
+
+            var buttonLock = document.getElementById('btn-lock');
+            var buttonUnlock = document.getElementById('btn-unlock');
+            var buttonRelease = document.getElementById('btn-release');
+            var buttonBlock = document.getElementById('btn-block');
+            var buttonDefault = document.getElementById('btn-default');
+
+            buttonLock.disabled = !buttons.lock;
+            buttonUnlock.disabled = !buttons.unlock;
+            buttonRelease.disabled = !buttons.release;
+            buttonBlock.disabled = !buttons.block;
+            buttonDefault.disabled = !buttons.default;
         }
 
         function dummyLock() {
@@ -255,23 +304,23 @@
     </div>
 
     <div id="toolbox">
-        <button class="btn btn-default lock" onclick="dummyLock()">
+        <button id="btn-lock" class="btn btn-default lock" onclick="dummyLock()">
             <i class="glyphicon glyphicon-lock"></i>
         </button>
 
-        <button class="btn btn-default unlock" onclick="dummyUnlock()">
+        <button id="btn-unlock" class="btn btn-default unlock" onclick="dummyUnlock()">
             <i class="glyphicon glyphicon-road"></i>
         </button>
 
-        <button class="btn btn-default release" onclick="dummyRelease()">
+        <button id="btn-release" class="btn btn-default release" onclick="dummyRelease()">
             <i class="glyphicon glyphicon-plane"></i>
         </button>
 
-        <button class="btn btn-default block" onclick="dummyBlock()">
+        <button id="btn-block" class="btn btn-default block" onclick="dummyBlock()">
             <i class="glyphicon glyphicon-remove"></i>
         </button>
 
-        <button class="btn btn-default default" onclick="dummyDefault()">
+        <button id="btn-default" class="btn btn-default default" onclick="dummyDefault()">
             <i class="glyphicon glyphicon-flash"></i>
         </button>
     </div>

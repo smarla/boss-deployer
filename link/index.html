@@ -40,6 +40,16 @@
                             break;
                     }
                     break;
+                case 'logout':
+                    switch(data.data.device) {
+                        case 'raspberry':
+                            raspyConnected = false;
+                            break;
+                        case 'cd':
+                            cdConnected = false;
+                            break;
+                    }
+                    break;
                 case 'lock':
                     status = 'LOCKED';
                     lockId = data.data.uuid;

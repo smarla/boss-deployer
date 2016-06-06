@@ -59,6 +59,22 @@ io.on('connection', function (socket) {
         console.log('device', data.name, 'connected');
     });
 
+    socket.on('logout', function(data) {
+        switch(data.name) {
+            case 'raspberry':
+                raspiSocket = null;
+                break;
+            case 'cd':
+                cdSocket = null;
+                break;
+            default:
+            // TODO Throw error - device unknown
+        }
+
+        uiSocket && uiSocket.emit('ui', { operation: 'logout', data: { device: data.name } });
+        console.log('device', data.name, 'disconnected');
+    });
+
     socket.on('lock', function(data) {
         // TODO Exception management
 

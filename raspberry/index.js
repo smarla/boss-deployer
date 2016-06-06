@@ -113,4 +113,9 @@ var server = app.listen(5000, function () {
 socket.on('connect', function () {
     console.log('Connecting to socket');
     socket.emit('login', { name: 'raspberry' });
+
+    socket.on('lock', function(data) {
+        console.log('Locking system', data);
+    });
+
 });

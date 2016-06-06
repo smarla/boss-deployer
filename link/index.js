@@ -13,7 +13,7 @@ app.get('/', function (req, res) {
     res.sendfile(__dirname + '/index.html');
 });
 
-var raspySocket = false;
+var raspiSocket = false;
 var cdSocket = false;
 var uiSocket = false;
 
@@ -34,7 +34,7 @@ io.on('connection', function (socket) {
     socket.on('login', function(data) {
         switch(data.name) {
             case 'raspberry':
-                raspySocket = socket;
+                raspiSocket = socket;
                 break;
             case 'cd':
                 cdSocket = socket;
@@ -65,6 +65,8 @@ io.on('connection', function (socket) {
 
         pipelineStatus = 'LOCKED';
         uiSocket && uiSocket.emit('ui', { operation: 'lock', data: response });
+
+        raspiSocket && raspiSocket.emit('lock', response);
     });
 
     socket.on('unlock', function(data) {

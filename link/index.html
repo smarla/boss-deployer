@@ -47,13 +47,18 @@
                     log.push('unlock::[' + data.data.uuid + '] lock released');
                     break;
                 case 'status':
-                    status = data.data.status;
+                    status = data.data.status !== 'default' ? data.data.status : 'FREE';
                     lockId = null;
                     pipeline = null;
                     step = null;
 
-                    var logStatus = status === 'RELEASED' ? 'release': status === 'BLOCKED' ? 'block' : 'default';
-                    log.push(logStatus + '::All pipelines released to RUN FREE :)');
+                    var logStatus = status === 'RELEASED' ? 'release': status === 'BLOCKED' ? 'block' : 'unlock';
+                    var logMessage = {
+                        'RELEASED': 'All pipelines released to RUN FREE :)',
+                        'BLOCKED': 'All pipelines have been BLOCKED by the boss :(',
+                        'FREE': 'Returned to DEFAULT execution mode'
+                    }[status];
+                    log.push(logStatus + '::' + logMessage);
                     break;
 
             }

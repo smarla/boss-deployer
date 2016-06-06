@@ -18,6 +18,12 @@ var uiSocket = false;
 
 var allSockets = [];
 
+var pipelineStatus = 'FREE';
+var locks = [];
+var unlocks = [];
+var status = [];
+
+
 io.on('connection', function (socket) {
     if(allSockets.indexOf(socket) === -1) {
         allSockets.push(socket);
@@ -42,6 +48,14 @@ io.on('connection', function (socket) {
         uiSocket && uiSocket.emit('ui', { operation: 'login', data: { device: data.name } });
         console.log('device', data.name, 'connected');
     });
+
+    socket.on('lock', function(data) {
+        // TODO Exception management
+
+        console.log('Pipeline', data.pipeline, 'requested locking on step', data.step);
+        pipelineStatus = 'LOCKED';
+        uiSocket && uiSocket.emit('ui', { operation: 'lock', data: data });
+    })
 
 });
 

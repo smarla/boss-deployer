@@ -8,6 +8,8 @@
     <script>
         var raspyConnected = false;
         var cdConnected = false;
+        var status = 'FREE';
+
 
         var socket = io.connect('http://smarla.com:8000');
 
@@ -26,6 +28,9 @@
                             break;
                     }
                     break;
+                case 'lock':
+                    status = 'LOCKED';
+                    break;
             }
 
             render();
@@ -40,6 +45,24 @@
 
             if(raspyConnected) raspyItem.style.opacity = 1;
             if(cdConnected) cdItem.style.opacity = 1;
+
+            var statusItem = document.getElementById('status');
+            statusItem.innerHTML = status;
+            switch(status) {
+                case 'FREE':
+                    statusItem.className = 'status-free';
+                    break;
+                case 'LOCKED':
+                    statusItem.className = 'status-locked';
+                    break;
+            }
+        }
+
+        function dummyLock() {
+            socket.emit('lock', {
+                pipeline: 'sent-from-link',
+                step: 'dummy-step'
+            });
         }
 
         window.onload = function() {
@@ -48,6 +71,21 @@
     </script>
 
     <style>
+        #toolbox {
+            position: fixed;
+            top: 10px;
+            right: 10px;
+        }
+
+        #toolbox button {
+            display: inline-block;
+            margin: 10px;
+            width: 30px;
+            height: 30px;
+            border: none;
+            border-radius: 5px;
+        }
+
         h1 {
             color: #444;
             margin-bottom: 2em;
@@ -57,13 +95,18 @@
             margin-top: 4em;
         }
 
-        .pipeline-status {
+        #status {
             font-size: 2em;
             text-transform: uppercase;
+            font-weight: bold;
         }
 
         .status-free {
             color: green;
+        }
+
+        .status-locked {
+            color: orange;
         }
 
         .device {
@@ -73,7 +116,6 @@
     </style>
 </head>
 <body>
-
     <div class="wrapper">
         <div class="row">
             <div class="col-xs-12 text-center">
@@ -100,11 +142,17 @@
                     Pipeline status
                 </span>
                 <br />
-                <span class="pipeline-status status-free">
+                <span class="status-free" id="status">
                     FREE
                 </span>
             </div>
         </div>
+    </div>
+
+    <div id="toolbox">
+        <button class="lock" onclick="dummyLock()">
+            <i class="glyphicon glyphicon-lock"></i>
+        </button>
     </div>
 
 </body>

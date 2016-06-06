@@ -85,6 +85,12 @@
                 case 'LOCKED':
                     statusItem.className = 'status-locked';
                     break;
+                case 'RELEASED':
+                    statusItem.className = 'status-released';
+                    break;
+                case 'BLOCKED':
+                    statusItem.className = 'status-blocked';
+                    break;
             }
 
             var logItem = document.getElementById('log');
@@ -169,6 +175,14 @@
 
         .status-locked {
             color: orange;
+        }
+
+        .status-released {
+            color: green;
+        }
+
+        .status-blocked {
+            color: red;
         }
 
         .device {

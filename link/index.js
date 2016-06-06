@@ -39,6 +39,14 @@ io.on('connection', function (socket) {
                 break;
             case 'cd':
                 cdSocket = socket;
+
+                cdSocket.emit('welcome', {
+                    currentStatus: pipelineStatus,
+                    locks: locks,
+                    unlocks: unlocks,
+                    statusStack: status
+                });
+
                 break;
             case 'ui':
                 uiSocket = socket;

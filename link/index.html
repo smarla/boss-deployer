@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Boss deployer link management</title>
+    <title>Boss Deployer manager</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
     <script src="/socket.io/socket.io.js"></script>
     <script>
@@ -53,7 +53,7 @@
                             break;
                     }
 
-                    log.push('default::Device' + data.data.device + 'disconnected');
+                    log.push('default::Device ' + data.data.device + ' disconnected');
 
                     break;
                 case 'lock':

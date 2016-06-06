@@ -46,6 +46,16 @@
                     step = null;
                     log.push('unlock::[' + data.data.uuid + '] lock released');
                     break;
+                case 'status':
+                    status = data.data.status;
+                    lockId = null;
+                    pipeline = null;
+                    step = null;
+
+                    var logStatus = status === 'RELEASED' ? 'release': status === 'BLOCKED' ? 'block' : 'default';
+                    log.push(logStatus + '::All pipelines released to RUN FREE :)');
+                    break;
+
             }
 
             render();
@@ -99,16 +109,20 @@
         }
 
         function dummyRelease() {
-            socket.emit('release', {
-                pipeline: 'sent-from-link',
-                step: 'dummy-step'
+            socket.emit('status', {
+                status: 'released'
             });
         }
 
         function dummyBlock() {
-            socket.emit('release', {
-                pipeline: 'sent-from-link',
-                step: 'dummy-step'
+            socket.emit('status', {
+                status: 'blocked'
+            });
+        }
+
+        function dummyDefault() {
+            socket.emit('status', {
+                status: 'default'
             });
         }
 
@@ -236,6 +250,10 @@
 
         <button class="btn btn-default block" onclick="dummyBlock()">
             <i class="glyphicon glyphicon-remove"></i>
+        </button>
+
+        <button class="btn btn-default default" onclick="dummyDefault()">
+            <i class="glyphicon glyphicon-flash"></i>
         </button>
     </div>
 

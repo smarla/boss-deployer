@@ -83,6 +83,18 @@ io.on('connection', function (socket) {
         uiSocket && uiSocket.emit('ui', { operation: 'unlock', data: response });
     });
 
+    socket.on('status', function(data) {
+        pipelineStatus = data.status.toUpperCase();
+
+        uiSocket && uiSocket.emit('ui', {
+            operation: 'status',
+            data: {
+                status: pipelineStatus,
+                changed_at: new Date().getTime()
+            }
+        });
+    });
+
 });
 
 function emitToAll(channel, message) {

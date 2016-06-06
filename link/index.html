@@ -36,7 +36,7 @@
                     status = 'LOCKED';
                     lockId = data.uuid;
                     pipeline = data.data.pipeline;
-                    step = data.pipeline.step;
+                    step = data.data.pipeline.step;
                     log.push('lock::[' + lockId + '] lock generated for pipeline ' + pipeline + ', on step ' + step + '.');
                     break;
                 case 'unlock':

@@ -20,6 +20,7 @@ var uiSocket = false;
 var allSockets = [];
 
 var pipelineStatus = 'FREE';
+
 var locks = {};
 var unlocks = {};
 var status = [];
@@ -86,7 +87,7 @@ io.on('connection', function (socket) {
     });
 
     socket.on('status', function(data) {
-        pipelineStatus = data.status.toUpperCase();
+        pipelineStatus = data.status !== 'default' ? data.status.toUpperCase() : 'FREE';
 
         uiSocket && uiSocket.emit('ui', {
             operation: 'status',

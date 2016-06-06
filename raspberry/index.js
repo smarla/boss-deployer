@@ -44,43 +44,28 @@ app.get('/unlock', function (req, res) {
 });
 
 app.get('/release', function (req, res) {
-    http.request({
-        host: '192.168.1.254',
-        path: '/release',
-        method: 'GET',
-        port: '80'
-    }).end();
-
     released = true;
+
+    socket.emit('status', { status: 'released' });
 
     res.setHeader('Content-Type', 'application/json');
     res.send(JSON.stringify({ operation: 'release', status: 'ok' }));
 });
 
 app.get('/block', function (req, res) {
-    http.request({
-        host: '192.168.1.254',
-        path: '/block',
-        method: 'GET',
-        port: '80'
-    }).end();
-
     blocked = true;
+
+    socket.emit('status', { status: 'blocked' });
 
     res.setHeader('Content-Type', 'application/json');
     res.send(JSON.stringify({ operation: 'block', status: 'ok' }));
 });
 
 app.get('/default', function (req, res) {
-    http.request({
-        host: '192.168.1.254',
-        path: '/default',
-        method: 'GET',
-        port: '80'
-    }).end();
-
     released = false;
     blocked = false;
+
+    socket.emit('status', { status: 'default' });
 
     res.setHeader('Content-Type', 'application/json');
     res.send(JSON.stringify({ operation: 'default', status: 'ok' }));

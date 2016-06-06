@@ -103,6 +103,10 @@ socket.on('lock', function(data) {
     console.log('Locking system', data);
 });
 
+socket.on('is-alive', function(data) {
+    socket.emit('ack-alive', { name: 'raspberry' });
+});
+
 
 process.stdin.resume();//so the program will not close instantly
 

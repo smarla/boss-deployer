@@ -39,6 +39,9 @@
                             cdConnected = true;
                             break;
                     }
+
+                    log.push('default::Device', data.data.device, 'connected');
+
                     break;
                 case 'logout':
                     switch(data.data.device) {
@@ -49,6 +52,9 @@
                             cdConnected = false;
                             break;
                     }
+
+                    log.push('default::Device', data.data.device, 'disconnected');
+
                     break;
                 case 'lock':
                     status = 'LOCKED';

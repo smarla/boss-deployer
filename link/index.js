@@ -97,13 +97,17 @@ io.on('connection', function (socket) {
     socket.on('status', function(data) {
         pipelineStatus = data.status !== 'default' ? data.status.toUpperCase() : 'FREE';
 
+        var message = {
+            status: pipelineStatus,
+            changed_at: new Date().getTime()
+        };
+
         uiSocket && uiSocket.emit('ui', {
             operation: 'status',
-            data: {
-                status: pipelineStatus,
-                changed_at: new Date().getTime()
-            }
+            data: message
         });
+
+        status.push(message);
     });
 
 });

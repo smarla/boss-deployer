@@ -21,6 +21,10 @@ The server contains two main submodules, each of which with separate responsibil
 * **HTTP API:** This api connects to the gadget bi-directionally - it calls gadget's API methods and receives comms from gadget's client - for managing state changes on the system - _e.g. the server calls the gadget's to engage the lock once the pipeline requests it; then it listens to calls made from the gadget's client to the server for releasing such lock_.
  
 * **Socket channel:** There is a socket channel continuously connected and sharing information about the pipeline and system status. This is mainly used to get communication outside system's network, and successfully communicate with any pipeline, anywhere.
+
+## The link
+
+The link is a Socket server, that connects the Raspi API to the outside. Pipelines, and all external systems that consume information from boss deployer, shall be connected to this socket. The socket is available at `connect.sandnet.smarla.com`.
  
 # Network configuration
 

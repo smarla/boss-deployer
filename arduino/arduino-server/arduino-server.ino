@@ -36,10 +36,10 @@ int green = 5;
 int blue = 3;
 
 int led1 = A0;
-int led2 = A1;
-int led3 = A2;
-int led4 = A3;
-//int led5 = A4;
+int led2 = A3;
+int led3 = A1;
+int led4 = A2;
+int led5 = A4;
 
 int unlockButton = 7;
 int blockButton = 8;
@@ -59,12 +59,14 @@ void setup() {
   pinMode(led2, OUTPUT);
   pinMode(led3, OUTPUT);
   pinMode(led4, OUTPUT);
+  pinMode(led5, OUTPUT);
 
   pinMode(unlockButton, INPUT);
   pinMode(blockButton, INPUT);
   pinMode(releaseButton, INPUT);
 
   rgb(20, 0, 0);
+  lightSequence(2000);
   lightsOn();
 
 //  setupServer();
@@ -158,18 +160,20 @@ void readState() {
   int blockStatus = digitalRead(blockButton);
   int releaseStatus = digitalRead(releaseButton);
 
+  Serial.println(releaseStatus);
+
   // Button
   bool changed = false;
   if(unlockStatus == HIGH) {
-    locked = !locked;
+    locked = false;
     released = false;
     blocked = false;
 
     delay(250);
   }
   if(blockStatus == HIGH) {
-    released = false;
     blocked = true;
+    released = false;
   }
   if(releaseStatus == HIGH) {
     released = true;
@@ -263,6 +267,7 @@ void lightsOff() {
   digitalWrite(led2, HIGH);
   digitalWrite(led3, HIGH);
   digitalWrite(led4, HIGH);
+  digitalWrite(led5, HIGH);
 }
 
 void lightsOn() {
@@ -270,6 +275,7 @@ void lightsOn() {
   digitalWrite(led2, LOW);
   digitalWrite(led3, LOW);
   digitalWrite(led4, LOW);
+  digitalWrite(led5, LOW);
 }
 
 void lightSequence(int ms) {
@@ -289,12 +295,21 @@ void lightSequence(int ms) {
   digitalWrite(led3, HIGH);
   digitalWrite(led4, LOW);
   delay(ms);
+  
   digitalWrite(led4, HIGH);
+  digitalWrite(led5, LOW);
+  delay(ms);
+
+  digitalWrite(led5, HIGH);
 }
 
 void lightSequenceInverse(int ms) {
   lightsOff();
-  
+
+  digitalWrite(led5, LOW);
+  delay(ms);
+
+  digitalWrite(led5, HIGH);
   digitalWrite(led4, LOW);
   delay(ms);
   
